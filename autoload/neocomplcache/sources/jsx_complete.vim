@@ -1,7 +1,5 @@
 
 let g:neocomplcache_jsx_executable_path = get(g:, "neocomplcache_jsx_executable_path", "jsx")
-let g:neocomplcache_jsx_nodejs_path = get(g:, "neocomplcache_jsx_nodejs_path", "node")
-
 let s:source = {
       \ 'name': 'jsx_complete',
       \ 'kind': 'ftplugin',
@@ -58,18 +56,16 @@ function! s:source.get_complete_words(cur_keyword_pos, cur_keyword_str)
 	let pre_cmd = ""
 	if neocomplcache#is_win()
 		let tempfile = substitute(tempfile, '\\', '/', 'g')
-		let pre_cmd = g:neocomplcache_jsx_nodejs_path
 	endif
 	call writefile(buf, tempfile)
 	let escaped_tempfile = shellescape(tempfile)
 
-	let command = pre_cmd." ".g:neocomplcache_jsx_executable_path
+	let command = g:neocomplcache_jsx_executable_path
 				\ . ' --complete '.line('.').":".(a:cur_keyword_pos)
 				\ . " " . escaped_tempfile
 	let result = system(command)
-	sandbox let output = eval(result[ 0 : len(result) - 2])
 
-" 	let output = split(neocomplcache#system(command), '\n')
+	sandbox let output = eval(result[ 0 : len(result) - 2])
 
 	call delete(tempfile)
 	
