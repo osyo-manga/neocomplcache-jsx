@@ -53,7 +53,7 @@ function! s:source.get_complete_words(cur_keyword_pos, cur_keyword_str)
 
 	let buf = getline(1, '$')
 	let tempfile = expand('%:p:h') . '/' . localtime() . expand('%:t')
-	let pre_cmd = ""
+
 	if neocomplcache#is_win()
 		let tempfile = substitute(tempfile, '\\', '/', 'g')
 	endif
@@ -63,6 +63,15 @@ function! s:source.get_complete_words(cur_keyword_pos, cur_keyword_str)
 	let command = g:neocomplcache_jsx_executable_path
 				\ . ' --complete '.line('.').":".(a:cur_keyword_pos)
 				\ . " " . escaped_tempfile
+
+" 	if exists('g:loaded_vimproc')
+" 		let result = system(command)
+" 	else
+" 		let result = system(command)
+" 	endif
+" 	echom string(result)
+" 	let tmp = neocomplcache#util#system(command)
+" 	echom neocomplcache#util#system(command)
 	let result = system(command)
 
 	sandbox let output = eval(result[ 0 : len(result) - 2])
